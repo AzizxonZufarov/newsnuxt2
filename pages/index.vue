@@ -1,6 +1,6 @@
 <template>
 <div>
-  <button @click="refresh" class="btn"> Force update </button>
+  <button @click="refresh" class="btn"> Force update </button><br/>
   <div class="grid grid-cols-4 gap-5">
     <div v-for="s in stories" :key="s">
       <StoryCard :story="s"/>
@@ -41,9 +41,11 @@ export default {
                   this.err = err
                 })
             })
-            
+          })
+          .then(() => {
+            stories.sort(function(a, b) { return time.a - time.b; });
           }) 
-      }
+  }
   },
   mounted() {
     this.reNew()
@@ -57,6 +59,7 @@ export default {
   }
   
 }
+
 </script>
 
 <style scoped>
