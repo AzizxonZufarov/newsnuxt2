@@ -43,7 +43,7 @@ export default {
             })
           })
           .then(() => {
-            stories.sort(function(a, b) { return time.a - time.b; });
+            stories.sort(function(a, b) { return a.time - b.time})
           }) 
   }
   },
