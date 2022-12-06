@@ -1,7 +1,7 @@
 <template>
 <div>
-  <button @click="refresh" class="btn"> Force update </button><br/>
-  <div class="grid grid-cols-4 gap-5">
+  <button @click="refreshData" class="btn"> Force update </button><br/>
+  <div class="">
     <div v-for="s in stories" :key="s">
       <StoryCard :story="s"/>
     </div>
@@ -16,6 +16,7 @@
   })
 
 export default {
+  /*grid grid-cols-4 gap-5*/
   data () {
     return {
       err: '',
@@ -30,7 +31,7 @@ export default {
     async reNew() {
         await $fetch('https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty')
           .then((response) => {
-            let results = response.slice(0, 10)
+            let results = response.slice(0, 3)
 
             results.forEach(id => {
             $fetch('https://hacker-news.firebaseio.com/v0/item/'+ id +'.json?print=pretty')
@@ -43,9 +44,10 @@ export default {
             })
           })
           .then(() => {
-            stories.sort(function(a, b) { return a.time - b.time})
+            //console.log()
+            this.stories.sort(function(a, b) { return a.time - b.time})
           }) 
-  }
+    }
   },
   mounted() {
     this.reNew()
