@@ -1,8 +1,8 @@
 <template>
 <div>
-  <button @click="reNew" class="btn"> Force update </button>
+  <button @click="refresh" class="btn"> Force update </button>
   <div class="grid grid-cols-4 gap-5">
-    <div v-for="s in stories" :key="story">
+    <div v-for="s in stories" :key="s">
       <StoryCard :story="s"/>
     </div>
   </div> 
@@ -20,10 +20,13 @@ export default {
     return {
       err: '',
       stories: [],
-      interval:null,
     }
   },
   methods: {
+    refresh() {
+      stories = []
+      this.reNew()
+    },
     async reNew() {
         await $fetch('https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty')
           .then((response) => {
@@ -46,11 +49,11 @@ export default {
     this.reNew()
   },
   created(){
-    this.interval = setInterval(() =>{
-      this.mounted()},5000)
-  },
-  destroyed(){
-    clearInterval(this.interval)
+    /*setInterval(() => {
+            alert()
+      stories = []
+      this.reNew()
+      }, 60000)*/
   }
   
 }
