@@ -4,6 +4,8 @@
     <Title>{{ story.title}}</Title>
     <Meta name="description" content="product.description" /> 
   </Head>
+
+
     <StoryDetails :story="story" />
     <button class="btn">
         <NuxtLink to="/">Back to home</NuxtLink>
@@ -11,45 +13,34 @@
   </div>
 </template>
 
-
-
-<script >
-
+<script setup>
   definePageMeta({
     layout: "stories"
   })
-export default {
-  
-  data () {
-    return {
-      uri: 'https://hacker-news.firebaseio.com/v0/item/'+ useRoute().params +'.json?print=pretty',
-      story: {},
-      err: '',
-      comments: [],
-    }
-  },
-  methods: {
-    async mounted() {
-  
-      this.story = await useFetch(uri, { key: useRoute().params })
-      console.log(this.story)
-      if(!this.story.value) {
-        throw createError({ statusCode: 404, statusMessage: 'Story not found!', fatal: true })
-      }
 
-      this.story.kids.forEach(id => {
+	const { id } = useRoute().params
+
+  const uri = 'https://hacker-news.firebaseio.com/v0/item/'+ id +'.json?print=pretty'
+
+  const { data: story } = await useFetch(uri, { key:id })
+
+  const { data: comments} = []
+
+
+
+  if(!this.story.value) {
+    throw createError({ statusCode: 404, statusMessage: 'Story not found!', fatal: true })
+  }
+
+    this.story.kids.forEach(id => {
       $fetch('https://hacker-news.firebaseio.com/v0/item/'+ id +'.json?print=pretty')
           .then((response) => {
               this.comments.push(response)
               console.log(this.comments)
           })
-          .catch(err=> {
+          .catch(err=> {q
             this.err = err
           })
       })
-
-    }
-  }  
-}
+  console.log(this.comments)
 </script>
-
