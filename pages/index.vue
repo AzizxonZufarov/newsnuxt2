@@ -41,6 +41,7 @@ export default {
                 })
                 .then(() => {
                   this.stories.sort(function(a, b) { return b.time - a.time})
+                  //console.log(this.stories)
                 }) 
                 .catch(err=> {
                   this.err = err
